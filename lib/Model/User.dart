@@ -24,10 +24,10 @@ class User {
    String joinDate;
 
   User({
-    this.id,
-    this.username,
-    this.avatar,
-    this.htmlUrl,
+    required this.id,
+    required this.username,
+    required this.avatar,
+    required this.htmlUrl,
    /* this.followersUrl,
     this.bio,
     this.followingUrl,
@@ -36,21 +36,21 @@ class User {
     this.organizationsUrl,
     this.reposUrl,
     this.eventsUrl,*/
-    this.name,
+    required this.name,
    /* this.company,
     this.blog,*/
-    this.publicRepos,
+    required this.publicRepos,
    /* this.message,*/
-    this.followers,
-    this.following,
-    this.joinDate
+    required this.followers,
+    required this.following,
+    required this.joinDate
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
       id: json['id'] ?? 0,
       username: json['login'] ?? 'Error loading data',
       avatar: json['avatar_url'] ?? 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png',
-      htmlUrl: json['html_url'],
+      htmlUrl: json['html_url'] ?? "",
     /*  followersUrl: json['followers_url'],
       followingUrl: json['following_url'],
       starredUrl: json['starred_url'],
@@ -66,7 +66,7 @@ class User {
      /* message: json['message'] ?? 'Error!',*/
       followers: json["followers"] ?? 0,
       following: json["following"] ?? 0,
-      joinDate: json["created_at"]
+      joinDate: json["created_at"] ?? ""
     );
   }
 

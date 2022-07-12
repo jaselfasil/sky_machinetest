@@ -85,14 +85,14 @@ class _UserSearchState extends State<UserSearch> {
     );
   }
 
-  void fetchUser() {
+  void fetchUser() async{
     if (_controller.text.isEmpty || _controller.text == "") {
       Fluttertoast.showToast(
           msg: "Please enter a name",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM);
     } else {
-      Provider.of<UserProvider>(context, listen: false)
+     await Provider.of<UserProvider>(context, listen: false)
           .sentRequestGetUser(context, _scaffoldKey, _controller.text);
       _controller.clear();
     }

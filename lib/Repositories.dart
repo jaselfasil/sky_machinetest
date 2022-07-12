@@ -8,7 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'Providers/RepositoryProvider.dart';
 
 class Repositories extends StatefulWidget {
-  String uName;
+  String? uName;
 
   Repositories(this.uName);
 
@@ -29,6 +29,9 @@ class _RepositoriesState extends State<Repositories> {
   @override
   Widget build(BuildContext context) {
     final f = new DateFormat.yMMMMd("en_US");
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    var textStyle = TextStyle(fontFamily: 'Lato', fontSize: width * 0.035,color: Colors.white);
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -40,11 +43,11 @@ class _RepositoriesState extends State<Repositories> {
           return value.getUserRepoData == null
               ? Center(child: CupertinoActivityIndicator())
               : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: value.getUserRepoData.length,
-                  physics: NeverScrollableScrollPhysics(),
+                 // shrinkWrap: true,
+                  itemCount: value.getUserRepoData?.length,
+                //  physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int position) {
-                    var item = value.getUserRepoData[position];
+                    var item = value.getUserRepoData![position];
                     return GestureDetector(
                       onTap: () {
                         _launchURL(item.url);
@@ -59,17 +62,22 @@ class _RepositoriesState extends State<Repositories> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    item.repo_name ?? "",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                                    item.repo_name,
+                                    style: textStyle
                                   ),
-                                  Text(
-                                    "${f.format(DateTime.parse((item.created_date.toString())))}",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
+                                 Icon(Icons.arrow_forward_ios,color: Colors.white,)
                                 ],
                               )),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding:  EdgeInsets.only(right: width * 0.02),
+                              child: Text(
+                                "${f.format(DateTime.parse((item.created_date.toString())))}",
+                                style: textStyle.copyWith(fontSize: width * 0.028),
+                              ),
+                            ),
+                          ),
                           Divider(
                             thickness: 1,
                             color: Colors.grey,
@@ -85,7 +93,7 @@ class _RepositoriesState extends State<Repositories> {
 
   void fetchUser() {
     Provider.of<RepositriesProvider>(context, listen: false)
-        .sentRequestGetUserRepo(context, _scaffoldKey, widget.uName);
+        .sentRequestGetUserRepo(context, _scaffoldKey, widget.uName!);
   }
 
   _launchURL(String url) async {

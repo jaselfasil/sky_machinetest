@@ -11,16 +11,17 @@ class UserProvider with ChangeNotifier {
   var http = Http.instance;
 
 
-  User userResponse;
+ late User userResponse;
 
 
   Future<dynamic> sentRequestGetUser(BuildContext context,GlobalKey<ScaffoldState> key,String username) async {
     String url = "${baseUrl + username} ";
     try {
-      userResponse = userRespFromJson(
-          await http.getRequest(url, context, scaffoldKey: key));
+      // userResponse = userRespFromJson(
+      //     await (http.getRequest(url, context, scaffoldKey: key)));
+      await http.getRequest(url, context, scaffoldKey: key).then((value) => userResponse = userRespFromJson(value));
       notifyListeners();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfile()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfile(username)));
     } catch (e) {
       print(e);
     }
@@ -30,6 +31,7 @@ class UserProvider with ChangeNotifier {
 
 
   User get getUserData{
+    notifyListeners();
     return userResponse;
   }
 

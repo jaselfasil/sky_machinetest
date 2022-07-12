@@ -6,23 +6,37 @@ import 'package:sky_machinetest/Providers/UserProvider.dart';
 import 'package:sky_machinetest/Repositories.dart';
 
 class UserProfile extends StatefulWidget {
+  String? uName;
+
+  UserProfile(this.uName);
 
   @override
   _UserProfileState createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   // fetchUser();
+  }
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    var textStyle = TextStyle(fontFamily: 'Lato', fontSize: 18,color: Colors.white);
+    var textStyle = TextStyle(fontFamily: 'Lato', fontSize: width * 0.035,color: Colors.white);
     final f = new DateFormat.yMMMMd("en_US");
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.black,
       body: Consumer<UserProvider>(
         builder: (_, value, __) {
-          return Stack(
+          // ignore: unnecessary_null_comparison
+          return value.getUserData == null
+              ? Center(child: CupertinoActivityIndicator())
+              :  Stack(
             children: [
               Positioned(
                 child:Padding(
@@ -52,7 +66,7 @@ class _UserProfileState extends State<UserProfile> {
                             width: width * 0.15,
                             height: height * 0.15,),
                           SizedBox(width: 15,),
-                          Text(value.getUserData.username, style: textStyle,)
+                          Text(value.getUserData.username.toString(), style: textStyle,)
                         ],
                       ),
                     ),
@@ -142,7 +156,7 @@ class _UserProfileState extends State<UserProfile> {
                                   ),
                                   Text(value.getUserData.publicRepos.toString(),
                                       /*user.user.public_repo.toString(),*/
-                                      style: textStyle),
+                                      style: textStyle.copyWith(fontSize: width * 0.030)),
                                 ],
                               ),
                             ),
@@ -161,4 +175,8 @@ class _UserProfileState extends State<UserProfile> {
       ),
     );
   }
+ /* void fetchUser() {
+    Provider.of<UserProvider>(context, listen: false)
+        .sentRequestGetUser(context, _scaffoldKey, widget.uName!);
+  }*/
 }

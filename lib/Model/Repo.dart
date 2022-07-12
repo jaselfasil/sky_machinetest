@@ -16,18 +16,18 @@ class Repositries {
   /*final int stars;*/
 
   Repositries({
-    this.repo_name,
-    this.created_date,
+    required this.repo_name,
+    required this.created_date,
     /* this.branch,
     this.description,
     this.language,
     this.last_pushed,
     this.stars,*/
-    this.url,
+    required this.url,
   });
 
   factory Repositries.fromJson(Map<String, dynamic> json) => Repositries(
-      repo_name: json["name"],
-      url: json["html_url"],
-      created_date: json["created_at"]);
+      repo_name: json["name"]?? "",
+      url: json["html_url"]?? "",
+      created_date: json["created_at"]?? "");
 }

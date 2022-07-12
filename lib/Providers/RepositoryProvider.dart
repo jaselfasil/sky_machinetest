@@ -9,15 +9,14 @@ class RepositriesProvider with ChangeNotifier {
 
   var http = Http.instance;
 
-
-  List<Repositries> UserRepo;
+  List<Repositries>? UserRepo;
 
 
   Future<dynamic> sentRequestGetUserRepo(BuildContext context,GlobalKey<ScaffoldState> key,String username) async {
     String url = "${baseUrl + username + "/repos"}";
     try {
       UserRepo = listAllRepoRespFromJson(
-          await http.getRequest(url, context, scaffoldKey: key));
+          await (http.getRequest(url, context, scaffoldKey: key)));
       notifyListeners();
     } catch (e) {
       print(e);
@@ -27,7 +26,7 @@ class RepositriesProvider with ChangeNotifier {
 
 
 
-  List<Repositries> get getUserRepoData{
+  List<Repositries>? get getUserRepoData{
     return UserRepo;
   }
 
